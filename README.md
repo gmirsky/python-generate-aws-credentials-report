@@ -53,7 +53,7 @@ This script will take the following parameters
 - cn-northwest-1
 - eu-central-1
 - eu-central-2
-- eu-north-1'
+- eu-north-1
 - eu-south-1
 - eu-west-1
 - eu-west-2
