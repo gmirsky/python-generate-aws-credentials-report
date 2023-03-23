@@ -80,6 +80,7 @@ Using the following command this is the expected output you should see
 
 `python3 ./generateCredentialsReport.py --region='us-east-1' --profile='default' --filename 'credentialsReport.csv' --open`
 
+```sh
 💻  Platform: macOS-13.2.1-arm64-arm-64bit
 🐍  Python version: 3.11.2 (main, Feb 16 2023, 02:55:59) [Clang 14.0.0 (clang-1400.0.29.202)]
 Python version is OK ✅
@@ -99,6 +100,7 @@ Waiting for the credential report to be generated
 Credential report ready
 📂 Writing the credential report to credentialsReport.csv
 📂 Opening credentialsReport.csv in Excel
+```
 
 ## Security Notes
 
