@@ -5,9 +5,9 @@ import emoji as emoji
 import logging as logging
 import os as os
 import platform as platform
-import requests as requests 
-import subprocess as subprocess #nosec - B404:import_subprocess
-import sys as sys 
+import requests as requests
+import subprocess as subprocess  # nosec - B404:import_subprocess
+import sys as sys
 import time as time
 from botocore.exceptions import ClientError
 from shutil import get_terminal_size as get_terminal_size
@@ -133,7 +133,7 @@ def main():
             language='alias'))
         # Get the version of the AWS CLI.
         aws_cli_version = subprocess.check_output(
-            ['aws', '--version']).decode('utf-8').split(' ')[0] #nosec B603 B607
+            ['aws', '--version']).decode('utf-8').split(' ')[0]  # nosec B603 B607
         # Check that the AWS CLI version is less than verson 2.
         if int(aws_cli_version.split('/')[1].split('.')[0]) < 2:
             # Print an error message and raise an exception.
@@ -214,17 +214,41 @@ def main():
     if args.open:
         # determine if platform is Windows, Linux or Mac
         if platform.system() == 'Windows':
-            print(emoji.emojize(
-                ":open_file_folder: Opening {} in Excel in Windows").format(args.filename))
-            os.system('start excel.exe {}'.format(args.filename)) # nosec B605: start is used to open a file with excel.exe
+            # check if Excel is installed
+            if which('excel.exe') is None:
+                print(emoji.emojize(
+                    'Excel is not installed :cross_mark:',
+                    language='alias'))
+                raise Exception("Excel is not installed")
+            else:
+                print(emoji.emojize(
+                    ":open_file_folder: Opening {} in Excel in Windows").format(args.filename))
+                # nosec B605: start is used to open a file with excel.exe
+                os.system('start excel.exe {}'.format(args.filename))
         elif platform.system() == 'Linux':
-            print(emoji.emojize(
-                ":open_file_folder: Opening {} in LibreOffice in Linux").format(args.filename))
-            os.system('libreoffice {}'.format(args.filename)) # nosec B605: libreoffice is used to open a file with LibreOffice
+            # check if LibreOffice is installed
+            if which('libreoffice') is None:
+                print(emoji.emojize(
+                    'LibreOffice is not installed :cross_mark:',
+                    language='alias'))
+                raise Exception("LibreOffice is not installed")
+            else:
+                print(emoji.emojize(
+                    ":open_file_folder: Opening {} in LibreOffice in Linux").format(args.filename))
+                # nosec B605: libreoffice is used to open a file with LibreOffice
+                os.system('libreoffice {}'.format(args.filename))
         elif platform.system() == 'Darwin':
-            print(emoji.emojize(
-                ":open_file_folder: Opening {} in Excel in Mac").format(args.filename))
-            os.system('open -a "Microsoft Excel" {}'.format(args.filename)) # nosec B605: open is used to open a file with Microsoft Excel
+            # check if Excel is installed
+            if which('Microsoft Excel') is None:
+                print(emoji.emojize(
+                    'Excel is not installed :cross_mark:',
+                    language='alias'))
+                raise Exception("Excel is not installed")
+            else:
+                print(emoji.emojize(
+                    ":open_file_folder: Opening {} in Excel in Mac").format(args.filename))
+                # nosec B605: open is used to open a file with Microsoft Excel
+                os.system('open -a "Microsoft Excel" {}'.format(args.filename))
 
     print(emoji.emojize(":white_check_mark:  Done :white_check_mark:"))
 
