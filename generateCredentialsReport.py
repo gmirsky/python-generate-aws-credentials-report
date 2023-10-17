@@ -115,7 +115,7 @@ def main():
         print(emoji.emojize(
             'You must use Python 3 or higher :cross_mark:',
             language='alias'))
-        raise Exception("You must use Python 3 or higher")
+        raise ValueError("You must use Python 3 or higher")
     else:
         print(emoji.emojize(
             'Python version is OK :check_mark_button:',
@@ -126,7 +126,7 @@ def main():
         print(emoji.emojize(
             'AWS CLI is not installed :cross_mark:',
             language='alias'))
-        raise Exception("AWS CLI is not installed")
+        raise ValueError("AWS CLI is not installed")
     else:
         print(emoji.emojize(
             'AWS CLI is installed :check_mark_button:',
@@ -140,7 +140,7 @@ def main():
             print(emoji.emojize(
                 'You must use AWS CLI version 2 or higher :heavy_exclamation_mark:',
                 language='alias'))
-            raise Exception("You must use AWS CLI version 2 or higher")
+            raise ValueError("You must use AWS CLI version 2 or higher")
         else:
             # Display the version of the AWS CLI.
             print(emoji.emojize(":ok:  AWS CLI version: {}", language='alias').format(
@@ -166,9 +166,9 @@ def main():
           language='alias').format(platform.__version__))
 
     # Display the values of the command-line arguments.
-    print("AWS Region: {}".format(args.region))
-    print("AWS CLI Profile: {}".format(args.profile))
-    print("File name: {}".format(args.filename))
+    print(f"AWS Region: {args.region}")
+    print(f"AWS CLI Profile: {args.profile}")
+    print(f"File name: {args.filename}")
 
     # Create a Boto3 session using the specified profile and region.
     session = boto3.Session(profile_name=args.profile,
@@ -184,7 +184,7 @@ def main():
         s3_client.generate_credential_report()
     except ClientError as e:
         print(e)
-        raise Exception("Could not generate the credential report") from e
+        raise ValueError("Could not generate the credential report") from e
     else:
         print("Credential report being generated")
 
@@ -195,7 +195,7 @@ def main():
             credential_report = s3_client.get_credential_report()
         except ClientError as e:
             print(e)
-            raise Exception("Could not get the credential report") from e
+            raise ValueError("Could not get the credential report") from e
         else:
             # Check if the credential report is ready.
             if credential_report['Content']:
@@ -219,36 +219,36 @@ def main():
                 print(emoji.emojize(
                     'Excel is not installed :cross_mark:',
                     language='alias'))
-                raise Exception("Excel is not installed")
+                raise ValueError("Excel is not installed")
             else:
                 print(emoji.emojize(
                     ":open_file_folder: Opening {} in Excel in Windows").format(args.filename))
                 # nosec B605: start is used to open a file with excel.exe
-                os.system('start excel.exe {}'.format(args.filename))
+                os.system(f'start excel.exe {args.filename}')
         elif platform.system() == 'Linux':
             # check if LibreOffice is installed
             if which('libreoffice') is None:
                 print(emoji.emojize(
                     'LibreOffice is not installed :cross_mark:',
                     language='alias'))
-                raise Exception("LibreOffice is not installed")
+                raise ValueError("LibreOffice is not installed")
             else:
                 print(emoji.emojize(
                     ":open_file_folder: Opening {} in LibreOffice in Linux").format(args.filename))
                 # nosec B605: libreoffice is used to open a file with LibreOffice
-                os.system('libreoffice {}'.format(args.filename))
+                os.system(f'libreoffice {args.filename}')
         elif platform.system() == 'Darwin':
             # check if Excel is installed
             if which('Microsoft Excel') is None:
                 print(emoji.emojize(
                     'Excel is not installed :cross_mark:',
                     language='alias'))
-                raise Exception("Excel is not installed")
+                raise ValueError("Excel is not installed")
             else:
                 print(emoji.emojize(
                     ":open_file_folder: Opening {} in Excel in Mac").format(args.filename))
                 # nosec B605: open is used to open a file with Microsoft Excel
-                os.system('open -a "Microsoft Excel" {}'.format(args.filename))
+                os.system(f'open -a "Microsoft Excel" {args.filename}')
 
     print(emoji.emojize(":white_check_mark:  Done :white_check_mark:"))
 
